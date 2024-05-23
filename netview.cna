@@ -1,0 +1,20 @@
+beacon_command_register("netview_bof", "lists all servers of the specified type that are visible in a domain.",
+    "USAGE: netview_bof\n");
+
+alias netview_bof {
+    local('$bid $handle $data');
+    $bid = $1;
+
+    # Read in the right BOF file
+    $handle = openf(script_resource("netview.".barch($bid).".o"));
+    $data   = readb($handle, -1);
+    closef($handle);
+
+    # Pack our arguments
+    # $arg_data  = bof_pack($bid, "iz", $pid, $addr);
+
+    btask($bid, "Run NetView-BOF");
+
+    beacon_inline_execute($bid, $data, "go", $null);
+}
+
